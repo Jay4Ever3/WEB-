@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!-- ↑ 声明：告诉浏览器"这是一份 HTML5 文档"，必须放在第一行 -->
+<html lang="zh-CN">
+<!-- ↑ 整个网页的根标签，lang 表示页面语言是简体中文 -->
+<head>
+  <!-- ========= head 部分：放"看不见的信息"（给浏览器和搜索引擎看的） ========= -->
+  <meta charset="UTF-8">
+  <!-- ↑ 字符编码设为 UTF-8，防止中文显示成乱码 -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ↑ 适配手机屏幕：宽度=设备宽度，初始不缩放 -->
+
+  <meta name="description" content="王均均的个人博客，记录 HTML/CSS 学习笔记和生活随笔。">
+  <!-- ↑ 页面简介，搜索结果里可能显示这段文字 -->
+
+  <title>王均均的博客 | 记录学习与生活</title>
+  <!-- ↑ 显示在浏览器标签页上的标题 -->
+
+  <style>
+    /* ========= CSS 样式全部写在这里 =========
+       语法规则：  选择器 { 属性: 值;  属性: 值; }
+       选择器 = "给谁穿衣服"，{ } 里 = "穿什么衣服" */
+
+    /* 0. CSS 变量（进阶小知识）：把常用颜色定义成"变量"，改名换肤只改这一处 */
+    :root {
+      --primary:   #2f9bcc;  /* 主题色：青蓝 */
+      --primary-2: #6a5af9;  /* 主题色搭档：紫 */
+      --text:      #33415c;  /* 正文文字：深蓝灰（比纯黑柔和、和主题协调） */
+      --text-lite: #8a94a6;  /* 次要文字：浅灰蓝 */
+      --bg:        #eef2f8;  /* 页面背景：浅蓝灰 */
+      --card:      #ffffff;  /* 卡片背景 */
+    }
+
+    /* 1. 通配符选择器 * ：清空所有标签自带的默认边距，方便自己精确排版 */
+    * {
+      margin: 0;      /* 外边距：元素和周围元素之间的距离 */
+      padding: 0;     /* 内边距：元素边框和内容之间的距离 */
+      box-sizing: border-box; /* 盒模型：让 width 包含 padding 和 border，尺寸更好算 */
+    }
+
+    /* 点一下"首页/留言板"，页面平滑滚动过去，而不是生硬跳转 */
+    html { scroll-behavior: smooth; }
+
+    /* 鼠标划选文字时的颜色（小彩蛋） */
+    ::selection { background: var(--primary); color: #fff; }
+
+    /* 2. 标签选择器 body：给整个页面设置默认文字样式 */
+    body {
+      font-family: "楷体", "KaiTi", "Microsoft YaHei", sans-serif; /* 文字：楷体优先，雅黑兜底 */
+      color: (--text);        /* 文字颜色：用上面定义的变量 */
+      background-color: var(--bg); /* 页面背景色 */
+      line-height: 1.8;          /* 行高：1.8 倍，阅读更舒服 */
+    }
+
+    a { text-decoration: none; color: var(--primary); } /* 去掉超链接默认下划线 */
+    a:hover { text-decoration: underline; }             /* 伪类：鼠标悬停时加下划线 */
+    img { max-width: 100%; display: block; }            /* 图片最大不超过容器宽 */
+
+    /* ========= 页头 header ========= */
+    .site-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2)); /* 背景属性：双色渐变 */
+      color: #fff;                    /* 页头上文字用白色，对比清晰 */
+      text-align: center;
+      padding: 52px 0 0;              /* 上52 左右0 下0 的内边距 */
+      position: relative;             /* 作为装饰圆点的定位参照 */
+      overflow: hidden;               /* 裁掉超出页头的装饰圆 */
+    }
+    /* 装饰：页头右上/左下两个半透明大圆（纯 CSS 画的，不用图片） */
+    .site-header::before, .site-header::after {
+      content: "";                    /* 伪元素必须有 content 才会显示 */
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+    }
+    .site-header::before { width: 220px; height: 220px; top: -80px; right: -60px; }
+    .site-header::after  { width: 150px; height: 150px; bottom: -30px; left: -40px; }
+
+    /* 页头中央的大头像 */
+    .hero-avatar {
+      width: 84px; height: 84px;
+      border-radius: 50%;                       /* 圆形 */
+      border: 3px solid rgba(255,255,255,.85);  /* 白色描边 */
+      margin: 0 auto 14px;                      /* 水平居中 */
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    }
+    .site-header h1 { font-size: 34px; letter-spacing: 6px; text-shadow: 0 2px 8px rgba(0,0,0,.2); }
+    .slogan { margin: 10px 0 24px; opacity: .9; letter-spacing: 2px; }
+
+    /* --- 横向导航条：核心是 flex 弹性布局 --- */
+    .nav-list {
+      list-style: none;       /* 列表属性：去掉 ul 前面的小圆点 */
+      display: flex;          /* 开启弹性布局：子元素默认横向排成一排 */
+      justify-content: center;/* 主轴对齐：整体居中 */
+    }
+    .nav-list > li { position: relative; } /* 相对定位：给二级菜单当"定位参照物" */
+
+    .nav-list a {
+      display: block;         /* 让 <a> 占满整行，扩大鼠标可点击范围 */
+      padding: 13px 30px;     /* 盒模型：用内边距撑出按钮大小 */
+      color: #fff;
+      letter-spacing: 2px;
+      transition: background .3s; /* CSS3 过渡：背景色变化用 0.3 秒平滑完成 */
+    }
+    /* 悬停变亮 + 底部出现一条白色小横线（用伪元素画） */
+    .nav-list a::after {
+      content: "";
+      display: block;
+      height: 2px; width: 0;            /* 宽度 0 = 看不见 */
+      background: #fff;
+      margin: 4px auto 0;
+      border-radius: 2px;
+      transition: width .3s;            /* 宽度变化产生"横线滑出"动画 */
+    }
+    .nav-list a:hover { background: rgba(255,255,255,.15); }
+    .nav-list a:hover::after { width: 60%; } /* 悬停时横线滑出来 */
+
+    /* --- 选做内容：二级菜单（默认隐藏，悬停"文章分类"时显示） --- */
+    .sub-menu {
+      list-style: none;
+      position: absolute;     /* 绝对定位：脱离文档流，浮在页面上方 */
+      top: 100%; left: 0;     /* 出现在父元素的下方 */
+      min-width: 150px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(31,58,102,.18); /* 盒子阴影 */
+      border-radius: 0 0 10px 10px;
+      opacity: 0;             /* 完全透明 = 看不见 */
+      visibility: hidden;
+      transform: translateY(8px); /* 向下偏移 8 像素 */
+      transition: all .3s;    /* 显隐过程平滑过渡 */
+      z-index: 10;            /* 层级：保证盖在其他内容上面 */
+    }
+    .sub-menu a { color: var(--text); padding: 11px 22px; letter-spacing: 1px; }
+    .sub-menu a:hover { background: #e8f4fb; color: var(--primary); text-decoration: none; }
+    /* 关键一行：鼠标悬停在 li 上时，显示它的二级菜单 */
+    .has-sub:hover .sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    /* ========= 主体：左右分栏，同样用 flex ========= */
+    .container {
+      display: flex;       /* 弹性布局：让左边文章区和右边侧边栏并排 */
+      gap: 24px;           /* 两栏之间的间距 24px */
+      max-width: 1000px;   /* 盒模型：限制整体宽度，大屏幕上不会拉太宽 */
+      margin: 28px auto;   /* 外边距上下28、左右 auto = 水平居中的经典写法 */
+      padding: 0 15px;     /* 防止内容贴住屏幕边缘 */
+      align-items: flex-start; /* 两栏顶端对齐 */
+    }
+    .content  { flex: 2; } /* flex:2 → 左栏分到 2/3 的宽度 */
+    .sidebar  { flex: 1; } /* flex:1 → 右栏分到 1/3 的宽度 */
+
+    /* 文章卡片 */
+    article, .card {
+      background: var(--card);
+      border: 1px solid rgba(47,155,204,.12);  /* 带一点主题色的浅边框 */
+      border-radius: 14px;                     /* 圆角更圆润 */
+      padding: 24px;                           /* 内边距：内容不贴边（盒模型） */
+      margin-bottom: 24px;                     /* 外边距：卡片之间留空隙 */
+      box-shadow: 0 2px 10px rgba(31,58,102,.06);
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    /* CSS3 动画：鼠标悬停时卡片轻轻上浮 + 边框着色 */
+    article:hover, .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 24px rgba(31,58,102,.13);
+      border-color: rgba(47,155,204,.45);
+    }
+
+    /* 文章标题：左侧渐变竖条装饰 */
+    article h2 {
+      margin-bottom: 12px;
+      font-size: 22px;
+      color: var(--text);
+      padding-left: 12px;
+      border-left: 4px solid var(--primary);
+      line-height: 1.4;
+    }
+    .meta { font-size: 13px; color: var(--text-lite); margin-bottom: 14px; } /* 文章信息行 */
+    .tag {
+      display: inline-block;              /* 行内块：让 padding 生效又不独占一行 */
+      background: linear-gradient(135deg, #e8f4fb, #eeecfd); /* 浅渐变底 */
+      color: var(--primary);
+      padding: 2px 12px; border-radius: 20px; font-size: 12px;
+    }
+    figure { margin: 14px 0; border-radius: 10px; overflow: hidden; } /* figure = "图+图说明" */
+    figure img { transition: transform .4s; }  /* 准备动画 */
+    figure:hover img { transform: scale(1.04); } /* 悬停图片微微放大（额外小动画） */
+    figcaption { font-size: 13px; color: var(--text-lite); text-align: center; margin-top: 8px; }
+    article ul { padding-left: 22px; margin: 12px 0; }
+    article ul li::marker { color: var(--primary); } /* 列表小圆点换成主题色 */
+
+    /* 侧边栏 */
+    .avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%; margin: 12px auto;
+      border: 3px solid #e8f4fb;                /* 浅色描边，和主题呼应 */
+      box-shadow: 0 4px 12px rgba(31,58,102,.15);
+    }
+    .card h3 {
+      font-size: 17px; margin-bottom: 12px; color: var(--text);
+      padding-left: 10px; border-left: 4px solid var(--primary); /* 左侧彩色竖条装饰 */
+    }
+
+    /* 表格样式 */
+    table { width: 100%; border-collapse: collapse; } /* 合并相邻单元格边框 */
+    th, td { border: 1px solid #e3eaf3; padding: 9px; text-align: center; font-size: 14px; }
+    th { background: linear-gradient(135deg, #e8f4fb, #eeecfd); color: var(--text); }
+    tbody tr { transition: background .2s; }
+    tbody tr:hover { background: #f4f9fd; }   /* 鼠标划过表格行：整行高亮 */
+
+    /* 表单样式 */
+    form label { display: block; margin: 12px 0 5px; font-size: 14px; }
+    form input, form textarea {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid #d7e0ee; border-radius: 8px;
+      background: #fbfdff;
+      font-family: inherit; /* 继承页面的字体 */
+      transition: border-color .3s, box-shadow .3s;
+    }
+    form input:focus, form textarea:focus {        /* 聚焦伪类：点进输入框时 */
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(47,155,204,.18);
+    }
+    form button {
+      margin-top: 14px; width: 100%;
+      padding: 11px; border: none; border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff; font-size: 15px; letter-spacing: 4px;
+      cursor: pointer; /* 鼠标移上去变小手 */
+      box-shadow: 0 4px 12px rgba(47,155,204,.35);
+      transition: transform .3s, box-shadow .3s;
+    }
+    form button:hover { transform: translateY(-2px); box-shadow: 0 7px 16px rgba(47,155,204,.45); }
+    form button:active { transform: translateY(0); } /* 按下去时回弹归位 */
+
+    /* ========= 页脚 footer ========= */
+    .site-footer {
+      background: #26303f; color: #9aa7ba;
+      text-align: center; padding: 20px 0; margin-top: 28px;
+      font-size: 14px; letter-spacing: 1px;
+    }
+
+    /* ========= 选做：媒体查询，实现页面自适应 =========
+       意思是：当屏幕宽度小于 768px（手机/窄窗口）时，套用下面这段样式 */
+    @media (max-width: 768px) {
+      .container { flex-direction: column; } /* flex 主轴改为竖向：左右分栏变上下堆叠 */
+      .nav-list { flex-wrap: wrap; }         /* 导航项放不下时自动换行 */
+      .site-header h1 { font-size: 26px; }   /* 小屏幕上标题缩小 */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ========= body 部分：放"看得见的内容" =========
+       页面三大块：header 页头 → main 主体 → footer 页脚 -->
+
+  <!-- 页头：大头像 + 博客标题 + 横向导航条 -->
+  <header class="site-header" id="home">
+    <img class="hero-avatar" src="images/yuan-yi.png" alt="站长的头像：缘一">
+    <h1>王均均的博客</h1>
+    <p class="slogan">记录学习 · 分享生活</p>
+
+    <nav>
+      <!-- 导航用"无序列表"来做，这是最标准的写法 -->
+      <ul class="nav-list">
+        <li><a href="#home">首页</a></li>
+        <li class="has-sub">
+          <a href="#articles">文章分类</a>
+          <!-- 二级菜单：悬停才显示 -->
+          <ul class="sub-menu">
+            <li><a href="#articles">HTML 笔记</a></li>
+            <li><a href="#articles">CSS 笔记</a></li>
+            <li><a href="#articles">生活随笔</a></li>
+          </ul>
+        </li>
+        <li><a href="#message">留言板</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 主体：左栏文章 + 右栏侧边栏（flex 左右分栏） -->
+  <main class="container">
+
+    <!-- 左栏：文章列表 -->
+    <section class="content">
+      <!-- article = 一篇独立完整的文章 -->
+      <article id="articles">
+        <h2>我的第一篇 HTML 学习笔记</h2>
+        <p class="meta">发布时间：2026年9月29日 · 分类：<span class="tag">HTML</span></p>
+
+        <!-- figure：图片 + figcaption 图片说明 -->
+        <figure>
+          <img src="images/banner.svg" alt="文章配图：正在学习HTML">
+          <figcaption>图：学习 HTML 的第一步</figcaption>
+        </figure>
+
+        <p>HTML 就像盖房子的<b>骨架</b>，负责搭出页面的结构；
+           CSS 则是<em>装修</em>，负责让页面变漂亮。</p>
+
+        <p>今天我学到的重要知识点：</p>
+        <!-- 无序列表 -->
+        <ul>
+          <li>&lt;head&gt; 里放"看不见的信息"（编码、标题、样式）</li>
+          <li>&lt;body&gt; 里放"看得见的内容"（文字、图片、链接）</li>
+          <li>语义化标签让代码更好读：header / nav / main / footer</li>
+        </ul>
+
+        <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank">去 MDN 学习更多 HTML 知识 →</a></p>
+      </article>
+
+      <article>
+        <h2>CSS 盒模型到底是怎么回事？</h2>
+        <p class="meta">发布时间：2026年9月28日 · 分类：<span class="tag">CSS</span></p>
+        <p>页面上每个元素都是一个"盒子"，从里到外分别是：
+           <b>内容 content → 内边距 padding → 边框 border → 外边距 margin</b>。
+           就像一幅画：画是内容，画和边框的距离是 padding，画框是 border，
+           画框和墙上另一幅画的距离是 margin。</p>
+      </article>
+    </section>
+
+    <!-- 右栏：侧边栏 -->
+    <aside class="sidebar">
+      <!-- 关于我 -->
+      <section class="card">
+        <h3>关于我</h3>
+        <img class="avatar" src="images/yuan-yi.png" alt="我的头像：缘一">
+        <p style="text-align:center">大家好，我是王均均，<br>QQ:2762861401</p>
+      </section>
+
+      <!-- 表格 -->
+      <section class="card">
+        <h3>我的技能表</h3>
+        <table>
+          <tr>            <!-- tr = 一行 -->
+            <th>技能</th>  <!-- th = 表头单元格（自动加粗） -->
+            <th>掌握程度</th>
+          </tr>
+          <tr>
+            <td>HTML</td>  <!-- td = 普通单元格 -->
+            <td>★★★☆☆</td>
+          </tr>
+          <tr>
+            <td>CSS</td>
+            <td>★★☆☆☆</td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 表单 -->
+      <section class="card" id="message">
+        <h3>给我留言</h3>
+        <form action="#" method="get">
+          <label for="name">昵称：</label>
+          <input type="text" id="name" name="name" placeholder="请输入昵称" required>
+
+          <label for="msg">留言内容：</label>
+          <textarea id="msg" name="msg" rows="3" placeholder="想对我说点什么..."></textarea>
+
+          <button type="submit">提交留言</button>
+        </form>
+      </section>
+    </aside>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <p>© 2026 王均均的博客 · 由 HTML + CSS 手写完成（实验1 作业）</p>
+  </footer>
+</body>
+</html>
