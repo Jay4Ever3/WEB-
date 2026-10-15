@@ -1,0 +1,43 @@
+/* =========================================================
+   reset.css  ——  样式重置（实验2 第1步：样式初始化）
+   作用：用自己写的 CSS 覆盖浏览器的默认样式，
+        让所有页面都从“统一、可控”的起点开始。
+   注意：实验2 明确要求【不要】用 * { margin:0; padding:0; }
+        那样会把标题/段落/列表本该有的间距也全清掉。
+        我们只精确清除会“捣乱”的默认样式。
+   ========================================================= */
+
+/* 1. 统一盒模型：让 width 包含 padding 和 border，尺寸更好算 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. 清除常用内容元素的默认“外边距”
+      （body 默认 8px 外边距、h1~h6/p 默认间距、列表缩进等） */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote {
+  margin: 0;
+}
+
+/* 3. 去掉列表默认缩进和项目符号（导航、菜单都靠它，后面再用类选择器加回需要的） */
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* 4. 表单控件继承正文字体/字号/行高，但不破坏原生交互外观 */
+button, input, select, textarea {
+  font: inherit;
+}
+
+/* 5. 图片不超出容器、等比缩放、块级显示（消除行内图下方的空隙） */
+img, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 6. 统一表格边框模型，避免单元格边框“双线” */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}

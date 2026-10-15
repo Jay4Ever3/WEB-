@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- ↑ 声明：HTML5 文档 -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="王均均的博客 · 一篇完整的 HTML/CSS 学习笔记">
+  <title>我的第一篇 HTML 学习笔记 | 王均均的博客</title>
+
+  <!-- 实验2 第3步：内容页“复用”主页的通用样式，再外加自己的 article.css -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/article.css">
+  <link rel="stylesheet" href="css/media-query.css">
+</head>
+
+<body>
+  <!-- ========= 页头（和主页完全一样，直接复制复用） ========= -->
+  <header class="site-header" id="home">
+    <img class="hero-avatar" src="images/yuan-yi.png" alt="站长的头像：缘一">
+    <h1>王均均的博客</h1>
+    <p class="slogan">记录学习 · 分享生活</p>
+
+    <nav>
+      <ul class="nav-list">
+        <li><a href="index.html#home">首页</a></li>
+        <li class="has-sub">
+          <a href="index.html#articles">文章分类</a>
+          <ul class="sub-menu">
+            <li><a href="index.html#articles">HTML 笔记</a></li>
+            <li><a href="index.html#articles">CSS 笔记</a></li>
+            <li><a href="index.html#articles">生活随笔</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#message">留言板</a></li>
+      </ul>
+
+      <!-- 手机端折叠菜单 -->
+      <details class="mobile-menu">
+        <summary>菜单</summary>
+        <nav>
+          <a href="index.html#home">首页</a>
+          <a href="index.html#articles">文章分类</a>
+          <a href="index.html#message">留言板</a>
+        </nav>
+      </details>
+    </nav>
+  </header>
+
+  <!-- ========= 内容页主体：单栏阅读区 ========= -->
+  <div class="article-wrap">
+    <article class="post">
+      <h1 class="post-title">我的第一篇 HTML 学习笔记</h1>
+      <p class="post-meta">发布时间：2026年9月29日 · 分类：<span class="tag">HTML</span> · 阅读约 3 分钟</p>
+
+      <!-- .article-body 里的内容走 article.css 的正文排版 -->
+      <div class="article-body">
+        <p>HTML 就像盖房子的<b>骨架</b>，负责搭出页面的结构；CSS 则是<em>装修</em>，负责让页面变漂亮。两者配合，才能做出既结构清晰又好看的网页。</p>
+
+        <h2>一、页面长什么样：三大块</h2>
+        <p>一个标准页面通常分成三部分，用语义化标签写出来，代码一眼就懂：</p>
+        <ul>
+          <li><code>&lt;header&gt;</code>：页头（标题、导航）</li>
+          <li><code>&lt;main&gt;</code>：主体（文章、侧边栏）</li>
+          <li><code>&lt;footer&gt;</code>：页脚（版权信息）</li>
+        </ul>
+
+        <h2>二、head 与 body 的区别</h2>
+        <p>这是初学者最容易混的地方，记住一句就行：</p>
+        <blockquote>
+          &lt;head&gt; 里放“看不见的信息”（编码、标题、样式）；&lt;body&gt; 里放“看得见的内容”（文字、图片、链接）。
+        </blockquote>
+        <p>比如下面这段，就是设置字符编码和标签页标题：</p>
+        <pre><code>&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;我的博客&lt;/title&gt;</code></pre>
+
+        <h2>三、语义化标签的好处</h2>
+        <p>别全用 <code>&lt;div&gt;</code>，该用啥就用啥，好处很多：</p>
+        <ol>
+          <li>结构清晰，自己和别人都好读</li>
+          <li>对搜索引擎、读屏软件更友好</li>
+          <li>配合 CSS 写样式时，类名更少、更好维护</li>
+        </ol>
+        <p>常用的语义化标签：<code>header</code> / <code>nav</code> / <code>main</code> / <code>section</code> / <code>article</code> / <code>aside</code> / <code>footer</code>。</p>
+
+        <h2>四、下一步学什么</h2>
+        <p>结构会了，下一步就是 CSS：盒模型、flex 布局、样式重置、组件化……也就是<strong>实验2</strong>要做的事。继续加油！</p>
+        <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank">去 MDN 学习更多 HTML 知识 →</a></p>
+      </div>
+
+      <!-- 返回主页 -->
+      <a class="back-link" href="index.html">← 返回博客主页</a>
+    </article>
+  </div>
+
+  <!-- ========= 页脚（和主页一样） ========= -->
+  <footer class="site-footer">
+    <p>© 2026 王均均的博客 · 由 HTML + CSS 手写完成（实验2 作业）</p>
+  </footer>
+</body>
+</html>

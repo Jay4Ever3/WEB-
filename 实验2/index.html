@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- ↑ 声明：告诉浏览器“这是一份 HTML5 文档”，必须放第一行 -->
+<html lang="zh-CN">
+<!-- ↑ 根标签，lang 表示页面语言是简体中文 -->
+<head>
+  <!-- ========= head：放“看不见的信息”（给浏览器/搜索引擎看） ========= -->
+  <meta charset="UTF-8">
+  <!-- ↑ 字符编码 UTF-8，防止中文乱码 -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ↑ 适配手机：宽度=设备宽度，初始不缩放 -->
+
+  <meta name="description" content="王均均的个人博客，记录 HTML/CSS 学习笔记和生活随笔。">
+  <!-- ↑ 页面简介，搜索结果里可能显示 -->
+
+  <title>王均均的博客 | 记录学习与生活</title>
+  <!-- ↑ 浏览器标签页标题 -->
+
+  <!-- ========= 实验2 关键改动：CSS 拆成 4 个文件，按序外链 =========
+       顺序很重要：reset(重置) → base(基础) → common(公共组件) → media-query(自适应)
+       后面的会“叠”在前面的之上，所以顺序不能乱。 -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/media-query.css">
+</head>
+
+<body>
+  <!-- ========= body：放“看得见的内容” =========
+       三大块：header 页头 → main 主体 → footer 页脚 -->
+
+  <!-- 页头：大头像 + 标题 + 导航 -->
+  <header class="site-header" id="home">
+    <img class="hero-avatar" src="images/yuan-yi.png" alt="站长的头像：缘一">
+    <h1>王均均的博客</h1>
+    <p class="slogan">记录学习 · 分享生活</p>
+
+    <nav>
+      <!-- 桌面端：横向导航（窄屏会被 media-query.css 隐藏） -->
+      <ul class="nav-list">
+        <li><a href="#home">首页</a></li>
+        <li class="has-sub">
+          <a href="#articles">文章分类</a>
+          <!-- 二级菜单：悬停才显示 -->
+          <ul class="sub-menu">
+            <li><a href="#articles">HTML 笔记</a></li>
+            <li><a href="#articles">CSS 笔记</a></li>
+            <li><a href="#articles">生活随笔</a></li>
+          </ul>
+        </li>
+        <li><a href="#message">留言板</a></li>
+      </ul>
+
+      <!-- 手机端：折叠菜单（默认隐藏，窄屏才显示） -->
+      <details class="mobile-menu">
+        <summary>菜单</summary>
+        <nav>
+          <a href="#home">首页</a>
+          <a href="#articles">文章分类</a>
+          <a href="#message">留言板</a>
+        </nav>
+      </details>
+    </nav>
+  </header>
+
+  <!-- 主体：左栏文章 + 右栏侧边栏（flex 左右分栏） -->
+  <main class="container">
+
+    <!-- 左栏：文章列表 -->
+    <section class="content">
+      <!-- article = 一篇独立完整的文章 -->
+      <article id="articles" class="card">
+        <h2>我的第一篇 HTML 学习笔记</h2>
+        <p class="meta">发布时间：2026年9月29日 · 分类：<span class="tag">HTML</span></p>
+
+        <!-- figure：图片 + figcaption 图片说明 -->
+        <figure>
+          <img src="images/banner.svg" alt="文章配图：正在学习HTML">
+          <figcaption>图：学习 HTML 的第一步</figcaption>
+        </figure>
+
+        <p>HTML 就像盖房子的<b>骨架</b>，负责搭出页面的结构；
+           CSS 则是<em>装修</em>，负责让页面变漂亮。</p>
+
+        <p>今天我学到的重要知识点：</p>
+        <!-- 注意：首页文章列表里用 reset 后的无符号列表（导航同款），保持简洁 -->
+        <ul>
+          <li>&lt;head&gt; 里放“看不见的信息”（编码、标题、样式）</li>
+          <li>&lt;body&gt; 里放“看得见的内容”（文字、图片、链接）</li>
+          <li>语义化标签让代码更好读：header / nav / main / footer</li>
+        </ul>
+
+        <!-- 点这里跳到内容页看完整文章 -->
+        <p><a href="article.html">阅读全文 →</a></p>
+      </article>
+
+      <article class="card">
+        <h2>CSS 盒模型到底是怎么回事？</h2>
+        <p class="meta">发布时间：2026年9月28日 · 分类：<span class="tag">CSS</span></p>
+        <p>页面上每个元素都是一个“盒子”，从里到外分别是：
+           <b>内容 content → 内边距 padding → 边框 border → 外边距 margin</b>。
+           就像一幅画：画是内容，画和边框的距离是 padding，画框是 border，
+           画框和墙上另一幅画的距离是 margin。</p>
+      </article>
+    </section>
+
+    <!-- 右栏：侧边栏 -->
+    <aside class="sidebar">
+      <!-- 关于我 -->
+      <section class="card">
+        <h3>关于我</h3>
+        <img class="avatar" src="images/yuan-yi.png" alt="我的头像：缘一">
+        <p style="text-align:center">大家好，我是王均均，<br>QQ:2762861401</p>
+      </section>
+
+      <!-- 表格 -->
+      <section class="card">
+        <h3>我的技能表</h3>
+        <table>
+          <tr>
+            <th>技能</th>
+            <th>掌握程度</th>
+          </tr>
+          <tr>
+            <td>HTML</td>
+            <td>★★★☆☆</td>
+          </tr>
+          <tr>
+            <td>CSS</td>
+            <td>★★☆☆☆</td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 表单 -->
+      <section class="card" id="message">
+        <h3>给我留言</h3>
+        <form action="#" method="get">
+          <label for="name">昵称：</label>
+          <input type="text" id="name" name="name" placeholder="请输入昵称" required>
+
+          <label for="msg">留言内容：</label>
+          <textarea id="msg" name="msg" rows="3" placeholder="想对我说点什么..."></textarea>
+
+          <button type="submit">提交留言</button>
+        </form>
+      </section>
+    </aside>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    <p>© 2026 王均均的博客 · 由 HTML + CSS 手写完成（实验2 作业）</p>
+  </footer>
+</body>
+</html>
