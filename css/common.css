@@ -1,0 +1,191 @@
+/* =========================================================
+   common.css  ——  公共组件（实验2 第2步：样式复用/组件化）
+   把“每个页面都有的部分”抽出来：页头、导航、双栏布局、
+   卡片、表格、表单、页脚……主页和内容页都引用同一份，
+   改一处、全站生效，这就是“样式表组件化”。
+   ========================================================= */
+
+/* ===================== 页头 header ===================== */
+.site-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-2)); /* 双色渐变 */
+  color: #fff;
+  text-align: center;
+  padding: 52px 0 0;
+  position: relative;        /* 作为装饰圆点的定位参照 */
+  overflow: hidden;          /* 裁掉超出页头的装饰圆 */
+}
+/* 伪元素装饰：页头右上/左下两个半透明大圆（纯 CSS 画，不用图片）
+   对应实验2【自主拓展】的“伪元素用法”。 */
+.site-header::before,
+.site-header::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+}
+.site-header::before { width: 220px; height: 220px; top: -80px; right: -60px; }
+.site-header::after  { width: 150px; height: 150px; bottom: -30px; left: -40px; }
+
+/* 页头中央大头像 */
+.hero-avatar {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .85);
+  margin: 0 auto 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+}
+.site-header h1 {
+  font-size: 34px;
+  letter-spacing: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+  color: #fff;              /* 页头里的标题强制白色，盖过 base 的深色 */
+  margin: 0;
+}
+.slogan { margin: 10px 0 24px; opacity: .9; letter-spacing: 2px; }
+
+/* ===================== 横向导航条（用 flex 弹性布局） ===================== */
+.nav-list {
+  display: flex;            /* 子元素默认横向排成一排 */
+  justify-content: center;  /* 整体居中 */
+}
+.nav-list > li { position: relative; } /* 给二级菜单当定位参照 */
+
+.nav-list a {
+  display: block;          /* 占满整行，扩大点击范围 */
+  padding: 13px 30px;
+  color: #fff;
+  letter-spacing: 2px;
+  transition: background .3s;
+}
+/* 悬停变亮 + 底部滑出一条白色小横线（用 ::after 伪元素画） */
+.nav-list a::after {
+  content: "";
+  display: block;
+  height: 2px; width: 0;
+  background: #fff;
+  margin: 4px auto 0;
+  border-radius: 2px;
+  transition: width .3s;
+}
+.nav-list a:hover { background: rgba(255, 255, 255, .15); text-decoration: none; }
+.nav-list a:hover::after { width: 60%; }
+
+/* 二级菜单：默认隐藏，鼠标悬停“文章分类”时显示 */
+.sub-menu {
+  list-style: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 150px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 58, 102, .18);
+  border-radius: 0 0 10px 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all .3s;
+  z-index: 10;
+}
+.sub-menu a { color: var(--text); padding: 11px 22px; letter-spacing: 1px; }
+.sub-menu a:hover { background: #e8f4fb; color: var(--primary); text-decoration: none; }
+.has-sub:hover .sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* 手机端折叠菜单：默认隐藏，窄屏时才显示（具体在 media-query.css 里控制） */
+.mobile-menu { display: none; }
+
+/* ===================== 主体：左右双栏（flex） ===================== */
+.container {
+  display: flex;           /* 让左文章区和右侧边栏并排 */
+  gap: 24px;
+  max-width: 1000px;
+  margin: 28px auto;       /* 上下 28、左右 auto = 水平居中 */
+  padding: 0 15px;
+  align-items: flex-start; /* 两栏顶端对齐 */
+}
+.content { flex: 2; }       /* 左栏占 2/3 */
+.sidebar { flex: 1; }       /* 右栏占 1/3 */
+
+/* ===================== 卡片（文章/侧边栏区块通用） ===================== */
+.card {
+  background: var(--card);
+  border: 1px solid rgba(47, 155, 204, .12);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  transition: transform .3s, box-shadow .3s, border-color .3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(31, 58, 102, .13);
+  border-color: rgba(47, 155, 204, .45);
+}
+
+/* 文章标题：左侧渐变竖条装饰 */
+.card h2, .card h3 {
+  margin-bottom: 12px;
+  padding-left: 12px;
+  border-left: 4px solid var(--primary);
+  line-height: 1.4;
+}
+
+/* 文章信息行 + 标签 */
+.meta { font-size: 13px; color: var(--text-lite); margin-bottom: 14px; }
+.tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #e8f4fb, #eeecfd);
+  color: var(--primary);
+  padding: 2px 12px; border-radius: 20px; font-size: 12px;
+}
+
+/* 图片 + 图注（figure / figcaption） */
+figure { margin: 14px 0; border-radius: 10px; overflow: hidden; }
+figure img { transition: transform .4s; }
+figure:hover img { transform: scale(1.04); }
+figcaption { font-size: 13px; color: var(--text-lite); text-align: center; margin-top: 8px; }
+
+/* 侧边栏头像 */
+.avatar {
+  width: 96px; height: 96px;
+  border-radius: 50%; margin: 12px auto;
+  border: 3px solid #e8f4fb;
+  box-shadow: 0 4px 12px rgba(31, 58, 102, .15);
+}
+
+/* ===================== 表格 ===================== */
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid var(--line); padding: 9px; text-align: center; font-size: 14px; }
+th { background: linear-gradient(135deg, #e8f4fb, #eeecfd); color: var(--text); }
+tbody tr { transition: background .2s; }
+tbody tr:hover { background: #f4f9fd; }
+
+/* ===================== 表单 ===================== */
+form label { display: block; margin: 12px 0 5px; font-size: 14px; }
+form input, form textarea {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid #d7e0ee; border-radius: 8px;
+  background: #fbfdff;
+  font-family: inherit;
+  transition: border-color .3s, box-shadow .3s;
+}
+form input:focus, form textarea:focus {
+  outline: none; border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(47, 155, 204, .18);
+}
+form button {
+  margin-top: 14px; width: 100%;
+  padding: 11px; border: none; border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff; font-size: 15px; letter-spacing: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(47, 155, 204, .35);
+  transition: transform .3s, box-shadow .3s;
+}
+form button:hover { transform: translateY(-2px); box-shadow: 0 7px 16px rgba(47, 155, 204, .45); }
+form button:active { transform: translateY(0); }
+
+/* ===================== 页脚 footer ===================== */
+.site-footer {
+  background: #26303f; color: #9aa7ba;
+  text-align: center; padding: 20px 0; margin-top: 28px;
+  font-size: 14px; letter-spacing: 1px;
+}

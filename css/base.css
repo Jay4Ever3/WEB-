@@ -1,0 +1,92 @@
+/* =========================================================
+   base.css  ——  全站基础风格（实验2 第1步：样式初始化）
+   在 reset 之上，设定整站统一的：
+   变量(主题色/字号) + 字体行高 + 标题 + 链接 + 聚焦。
+   这里放“所有页面共用”的基础设定，不放具体组件。
+   ========================================================= */
+
+/* —— CSS 变量：把主题色、圆角等定义成变量，换肤只改这一处 ——
+   实验2【自主拓展】点名要练 CSS 变量，这里就是实例。 */
+:root {
+  --primary:   #2f9bcc;   /* 主题色：青蓝 */
+  --primary-2: #6a5af9;   /* 主题色搭档：紫 */
+  --text:      #33415c;   /* 正文文字：深蓝灰（比纯黑柔和） */
+  --text-lite: #8a94a6;   /* 次要文字：浅灰蓝 */
+  --bg:        #eef2f8;   /* 页面背景：浅蓝灰 */
+  --card:      #ffffff;   /* 卡片背景 */
+  --line:      #e3eaf3;   /* 浅边框线 */
+  --radius:    14px;      /* 统一圆角 */
+  --shadow:    0 2px 10px rgba(31,58,102,.06);
+}
+
+/* 点导航链接时平滑滚动，而不是生硬跳转 */
+html { scroll-behavior: smooth; }
+
+/* 鼠标划选文字的高亮色（小彩蛋） */
+::selection { background: var(--primary); color: #fff; }
+
+/* —— 页面基础：字体、字号、行高、文字颜色、背景 —— */
+body {
+  font-family: "楷体", "KaiTi", "Microsoft YaHei", sans-serif; /* 楷体优先，雅黑兜底 */
+  font-size: 16px;          /* 根字号，rem 都参考它 */
+  line-height: 1.8;         /* 行高：1.8 倍，阅读舒服 */
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+/* —— 标题排版：保留合适间距，只统一字号与颜色 —— */
+h1 { margin: 0.67em 0; font-size: 32px; color: var(--text); }
+h2 { margin: 0.83em 0; font-size: 22px; color: var(--text); }
+h3 { margin: 1em 0;    font-size: 18px; color: var(--text); }
+
+/* —— 段落与列表的默认间距 —— */
+p { margin: 1em 0; }
+
+/* —— 链接交互 —— */
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--primary-2); }
+
+/* 键盘聚焦时显示清晰描边（无障碍友好，也呼应实验2 的 :focus-visible 示例） */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--primary-2);
+  outline-offset: 2px;
+}
+body.night{
+  background-color: #1a1a1a;
+  color:#eee;
+
+}
+.night .card{
+  background-color: #2b2b2b;
+}
+/*昼夜模式*/
+body.night {
+  background-color:#1a1a1a;
+  color:#eee;
+}
+.night .card{
+  background-color:#2b2b2b;
+}
+
+/*注册表单样式*/
+.item-row{
+  margin:12px 0;
+}
+.item-row label{
+  display: inline-block;
+  width:80px;
+}
+.item-row input{
+  padding:5px;
+  width:200px;
+}
+.tip{
+  display:block;
+  font-size:13px;
+  margin-left:84px;
+  margin-top:4px;
+}
