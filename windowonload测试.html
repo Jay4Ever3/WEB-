@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>head中写JS</title>
+    <script>
+        //窗口加载完成事件
+        window.onload=function(){
+            //只有页面全部加载完，才会跑这里面代码
+            const oBtn =document.getElementById('show');
+            oBtn.onclick=()=>{
+                console.log('这是点击按钮后现实的内容')
+            }
+        }
+    </script>
+</head>
+<body>
+    <button id="show">点我测试</button>
+</body>
+</html>

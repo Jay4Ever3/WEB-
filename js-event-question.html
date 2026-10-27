@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JavaScript事件练习：学生成绩统计</title>
+  </head>
+  <body>
+    <h2>JS事件练习：学生成绩统计</h2>
+    <h3>修改鼠标点击事件为鼠标悬停事件，查看学生成绩统计结果</h3>
+
+    <label for="pass-line">及格线设置</label>
+    <select id="pass-line">
+      <option value="60">60分</option>
+      <option value="70">70分</option>
+      <option value="80">80分</option>
+    </select>
+
+    <button  id="count-btn" type="button">统计成绩</button>
+    <p id="result">统计结果</p>
+
+    <script >
+      //  对象数组模拟后台数据
+      const students = [
+        { name: "小林", score: 75 },
+        { name: "小周", score: 55 },
+        { name: "小陈", score: 85 },
+        { name: "小吴", score: 65 },
+      ];
+      
+      // 获取需要操作的DOM元素      
+      const passLine = document.getElementById("pass-line");
+      // Q1：通过querySelector获取button按钮元素
+      //const button =document.queryselector('#count-btn');
+      const button = document.getElementById("count-btn");
+      const resultElement = document.getElementById("result");
+      
+      //编写鼠标点击后的处理函数 
+      function showResult() {
+        let total = 0;
+        let passedCount = 0;
+        let passNameList=[];
+
+      if (students.length === 0) {
+        resultElement.textContent = "没有学生数据";
+       return;
+      }
+
+        for(const student of students) {
+            total += student.score;
+            // 调用isPass函数判断学生成绩是否及格
+            // Q2：把及格学生的姓名输出到页面上
+            // 方法：定义一个新的数组存储及格学生的姓名，当判断及格后用push()方法添加姓名，并在下面的模板字符串中输出该数组
+            if (isPass(student.score)) {
+              passedCount += 1;
+              passNameList.push(student.name);
+            }            
+        }  
+        if(passedCount === 0) {
+          resultElement.textContent = "没有及格学生";
+          return;
+        }
+        resultElement.textContent = `及格人数：${passedCount}，平均分：${total / students.length},及格学生：${passNameList.join(',')}`;
+      }
+      // 编写判断学生成绩是否及格的函数
+      function isPass(score) {
+        // Q3：passLine.value的类型是什么？将其转换为数字类型？答：字符串
+        const passLineValue = Number(passLine.value);
+        return score >= passLineValue;
+      }
+      // 增加鼠标点击事件，查看学生成绩统计结果
+      // Q4: 将鼠标点击事件改为鼠标悬停mouseenter事件，查看学生成绩统计结果
+      button.addEventListener("mouseenter", showResult);
+
+      // 【选做】边界处理：当没有数据是空数组时，平均分计算结果为 NaN，修改为文字提示：
+      // 学生数组为空时，显示“没有学生数据”；
+      // 学生数组不为空，但没有及格学生时，显示“没有及格学生”
+
+    </script>
+      
+    </script>
+  </body>
+</html>

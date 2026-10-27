@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS基础ES6练习</title>
+</head>
+<body>
+<script>
+    //1.常量const 不能修改；变量let可以修改
+    const PI =3.1415926
+    console.log('PI',PI);
+
+   /*let age=18;
+    age=22;
+    console.log('age:',age);*/ 
+
+    //2.模板字符串 ES6
+    const product ='手机';
+    const price = 2999;
+    const text =`商品:${product},价格:${price}元`;
+    console.log(text);
+
+    //3.数组+for..of循环 ES6
+    let arr6=['重庆理工大学','cqut.deu.cn',100];
+    for (let item of arr6){
+        console.log('for...of',item)
+    }
+
+    //4.箭头函数 ES6
+    const plus2 = (a,b)=> a+b
+    console.log('plus2:',plus2(10,20));
+
+    //5.对象
+    const boy={
+        name:'James',
+        age:68,
+        weight:120,
+        sayYes(){
+            return 'yes';
+        }
+    }
+    console.log(boy.sayYes);
+
+    //1.字符串新增方法 includes/startsWith/endsWith
+    let str ='chongqing';
+
+    //判断是否包含某个字符串
+    let result1=str.includes('chong');
+    console.log('是否包含chong:',result1);
+
+    //判断是否以特定前缀开头
+    let result2=str.startsWith('ch');
+    console.log('是否以ch开头:',result2);
+
+    //判断是否以指定后缀结尾
+    let result3=str.endsWith('i');
+    console.log('是否以ing结尾:',result3);
+
+    //2.解构赋值：分解结构，快速取出数据
+    const arr=[14,34,23];
+    const[arr1,arr2]=arr;
+    console.log('arr1:',arr1,'arr2:',arr2);
+
+    //直接从boy对象取出name\age
+    //const{name,age,weight}=boy;
+    //console.log('name:',name,'age:',age,'weight:',weight);
+    
+    const { name: userName, age, weight} = boy 
+    console.log('userName:', userName,'age:', age, 'weight:', weight)
+
+    let[A,...B]=[1,2,3,4,5];
+    console.log('A:',A,'B:',B);
+    //数组复制合并
+    const arr3=[1,2,3];
+    const arr4=[...arr3,4,5];
+    console.log('arr4:',arr4);
+</script>
+</body>
+</html>
