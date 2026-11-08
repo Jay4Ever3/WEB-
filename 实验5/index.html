@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- ↑ 声明：告诉浏览器“这是一份 HTML5 文档”，必须放第一行 -->
+<html lang="zh-CN">
+<!-- ↑ 根标签，lang 表示页面语言是简体中文 -->
+<head>
+  <!-- ========= head：放“看不见的信息”（给浏览器/搜索引擎看） ========= -->
+  <meta charset="UTF-8">
+  <!-- ↑ 字符编码 UTF-8，防止中文乱码 -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ↑ 适配手机：宽度=设备宽度，初始不缩放 -->
+
+  <meta name="description" content="王均均的个人博客，记录 HTML/CSS 学习笔记和生活随笔。">
+  <!-- ↑ 页面简介，搜索结果里可能显示 -->
+
+  <title>王均均的博客 | 记录学习与生活</title>
+  <!-- ↑ 浏览器标签页标题 -->
+
+  <!-- ========= 实验2 关键改动：CSS 拆成 4 个文件，按序外链 =========
+       顺序很重要：reset(重置) → base(基础) → common(公共组件) → media-query(自适应)
+       后面的会“叠”在前面的之上，所以顺序不能乱。 -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/media-query.css">
+</head>
+
+<body>
+  <!-- ========= body：放“看得见的内容” =========
+       三大块：header 页头 → main 主体 → footer 页脚 -->
+
+  <!-- 页头：大头像 + 标题 + 导航 -->
+  <header class="site-header" id="home">
+    <img class="hero-avatar" src="images/yuan-yi.png" alt="站长的头像：缘一">
+    <h1>王均均的博客</h1>
+    <p class="slogan">记录学习 · 分享生活</p>
+
+    <nav>
+      <!-- 桌面端：横向导航（窄屏会被 media-query.css 隐藏） -->
+      <ul class="nav-list">
+        <li><a href="#home">首页</a></li>
+        <li class="has-sub">
+          <a href="#articles">文章分类</a>
+          <!-- 二级菜单：悬停才显示 -->
+          <ul class="sub-menu">
+            <li><a href="#articles">HTML 笔记</a></li>
+            <li><a href="#articles">CSS 笔记</a></li>
+            <li><a href="#articles">生活随笔</a></li>
+          </ul>
+        </li>
+        <li><a href="#message">留言板</a></li>
+      </ul>
+      <button id="skinBtn">切换昼夜模式
+      </button>
+      <!-- 手机端：折叠菜单（默认隐藏，窄屏才显示） -->
+      <details class="mobile-menu">
+        <summary>菜单</summary>
+        <nav>
+          <a href="#home">首页</a>
+          <a href="#articles">文章分类</a>
+          <a href="#message">留言板</a>
+        </nav>
+      </details>
+    </nav>
+  </header>
+
+  <!-- 实验5 Vue挂载容器，主体全部放在里面 -->
+  <div id="app">
+    <!-- 主体：左栏文章 + 右栏侧边栏（flex 左右分栏） -->
+    <main class="container">
+
+      <!-- 左栏：文章列表 -->
+      <section class="content">
+        <!-- 搜索框 -->
+        <div class="card">
+          <h3>文章搜索</h3>
+          <input type="text" v-model="keyword" placeholder="输入文章标题关键词">
+          <button @click="resetSearch">重置</button>
+          <p>当前关键词：{{ keyword }}</p>
+        </div>
+
+        <!--使用计算filteredArticles，v-if判断无结果提示文章计数-->
+        <p id="article-count">显示{{filteredArticles.length}}/共{{blogArticles.length}}篇文章</p>
+        <p v-if="filteredArticles.length===0">没有搜索到相关文章</p>
+
+        <!--v-for循环渲染文章，:key绑定id -->
+        <div>
+          <article v-for="art in filteredArticles" :key="art.id" class="card">
+            <div class="meta">{{ art.date }}</div>
+            <h2 class="title">{{ art.title }}</h2>
+            <p class="summary">{{ art.summary }}</p>
+          </article>
+        </div>
+      </section>
+      <!-- 右栏：侧边栏 -->
+      <aside class="sidebar">
+        <!-- 关于我 -->
+        <section class="card">
+          <h3>关于我</h3>
+          <img class="avatar" src="images/yuan-yi.png" alt="我的头像：缘一">
+          <p style="text-align:center">大家好，我是王均尧，<br>QQ:2762861401</p>
+        </section>
+
+        <!-- 表格 -->
+        <section class="card">
+          <h3>我的技能表</h3>
+          <table>
+            <tr>
+              <th>技能</th>
+              <th>掌握程度</th>
+            </tr>
+            <tr>
+              <td>HTML</td>
+              <td>★★★☆☆</td>
+            </tr>
+            <tr>
+              <td>CSS</td>
+              <td>★★☆☆☆</td>
+            </tr>
+          </table>
+        </section>
+
+        <!-- 实验4留言板 -->
+        <section class="card" id="message">
+          <h3>给我留言</h3>
+          <!-- @submit.prevent 阻止表单默认提交，ref获取昵称输入框DOM，v-model双向绑定表单数据 -->
+          <form @submit.prevent="addMessage">
+            <label>昵称：</label>
+            <input type="text" ref="nicknameInput" v-model="nickname" placeholder="1‑20字">
+            <label>留言内容：</label>
+            <textarea v-model="content" rows="3" placeholder="1‑300字"></textarea>
+            <button type="submit">发表留言</button>
+          </form>
+          <p id="msg-count">共有 {{ messages.length }} 条留言</p>
+          <p v-if="messages.length===0">暂无留言，快来抢沙发吧！</p>
+          <div>
+            <div v-for="msg in messages" :key="msg.id" class="card">
+              <p>昵称：{{ msg.nickname }}</p>
+              <p>{{ msg.content }}</p>
+              <button @click="deleteMessage(msg.id)">删除留言</button>
+            </div>
+          </div>
+        </section>
+        <!--实验3 完整注册表单-->
+        <section class="card">
+          <h3>博客账号注册</h3>
+          <form id="registerForm">
+            <div class="item-row">
+              <label>用户名：</label>
+              <input type="text" id="username" placeholder="3‑16位字母数字下划线">
+              <span class="tip" id="userTip"></span>
+            </div>
+            <div class="item-row">
+              <label>邮箱：</label>
+              <input type="text" id="email" placeholder="请输入邮箱">
+              <span class="tip" id="emailTip"></span>
+            </div>
+            <div class="item-row">
+              <label>密码：</label>
+              <input type="password" id="pwd" placeholder="至少6位">
+              <span class="tip" id="pwdTip"></span>
+            </div>
+            <div class="item-row">
+              <label>确认密码：</label>
+              <input type="password" id="repwd" placeholder="再次输入密码">
+              <span class="tip" id="repwdTip"></span>
+            </div>
+            <div class="item-row">
+              <label></label>
+              <button type="submit">提交注册</button>
+            </div>
+          </form>
+        </section>
+      </aside>
+    </main>
+  </div>
+  <!-- #app结束，页脚放在Vue容器外面 -->
+  <footer class="site-footer">
+    <p>© 2026 王均均的博客</p>
+  </footer>
+
+<!--1.Vue CDN库 最先加载-->
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.44/dist/vue.global.js"></script>
+<!--2.加载外部模拟数据 data.js，提供blogArticles数组-->
+<script src="js/data.js"></script>
+<!--3.原生js（昼夜切换、注册表单校验，保留）-->
+<script src="js/main.js"></script>
+
+</body>
+</html>
