@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验6-局部组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.5.44/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <fieldset>
+            <h3>
+                定义局部组件
+            </h3>
+            <local-component></local-component>
+        </fieldset>
+    </div>
+    <script>
+        const {createApp} =Vue;
+        const LocalComponent ={
+            data(){
+                return{title:"wjy1111"}
+            },
+            template:`
+            <div>
+            <p>多个HTML元素时，使用根元素div</p>
+            <h3 v-bind:title="title" >h3‑JS自定义局部组件，鼠标停留有提示信息</h3>
+          </div>
+      `
+        };
+        const App = {
+              //2.注册局部组件：components选项
+              components: {
+                'LocalComponent': LocalComponent
+              }
+            };
+            const app = createApp(App);
+            app.mount("#app");
+    </script>
+</body>
+</html>

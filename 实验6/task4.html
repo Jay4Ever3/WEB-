@@ -1,0 +1,35 @@
+  <body>
+    <div id="app">
+      <h1>我的博客</h1>
+      <nav>
+        <router-link to="/">HMOE</router-link> ·
+        <router-link to="/about">ABOUT</router-link>
+      </nav>
+      <!-- 当前地址匹配的组件渲染在这里-->
+      <router-view></router-view>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.5.44/dist/vue.global.js"></script>
+    <!-- 通过CDN引入Vue Router4，使网页能够使用Vue Router提供的路由功能 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@4.6.3/dist/vue-router.global.js"></script>
+    <script>
+      // 自定义两个模板
+      const Home = { 
+        template: "<p>首页：欢迎阅读我的博客</p>" 
+      };
+      const About = { 
+        template: "<p>关于：这里记录我的学习笔记</p>" 
+      };
+      const router = VueRouter.createRouter({
+        // 设置路由的工作模式为Hash模式
+        history: VueRouter.createWebHashHistory(),
+        // 配置UR地址与Vue组件之间的对应关系
+        routes: [
+          { path: "/", component: Home },
+          { path: "/about", component: About },
+        ],
+      });
+      // Vue链式调用：createApp()创建应用，use()安装路由插件，mount()启动页面渲染
+      Vue.createApp({}).use(router).mount("#app");
+    </script>
+  </body>

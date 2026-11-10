@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- ↑ 声明：告诉浏览器“这是一份 HTML5 文档”，必须放第一行 -->
+<html lang="zh-CN">
+<!-- ↑ 根标签，lang 表示页面语言是简体中文 -->
+<head>
+  <!-- ========= head：放“看不见的信息”（给浏览器/搜索引擎看） ========= -->
+  <meta charset="UTF-8">
+  <!-- ↑ 字符编码 UTF-8，防止中文乱码 -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ↑ 适配手机：宽度=设备宽度，初始不缩放 -->
+
+  <meta name="description" content="王均均的个人博客，记录 HTML/CSS 学习笔记和生活随笔。">
+  <!-- ↑ 页面简介，搜索结果里可能显示 -->
+
+  <title>王均均的博客 | 记录学习与生活</title>
+  <!-- ↑ 浏览器标签页标题 -->
+  <style>
+    .active{
+      color:#428bca;
+      font-weight:bold;
+    }
+  </style>
+  <!-- ========= 实验2 关键改动：CSS 拆成 4 个文件，按序外链 =========
+       顺序很重要：reset(重置) → base(基础) → common(公共组件) → media-query(自适应)
+       后面的会“叠”在前面的之上，所以顺序不能乱。 -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/media-query.css">
+</head>
+
+<body>
+  <!-- 昼夜按钮在#app外部，原生JS控制，不受路由影响 -->
+  <header class="site-header" id="home">
+    <img class="hero-avatar" src="images/yuan-yi.png" alt="站长的头像：缘一">
+    <h1>王均均的博客</h1>
+    <p class="slogan">记录学习 · 分享生活</p>
+    <button id="skinBtn">切换昼夜模式</button>
+  </header>
+
+  <!-- Vue挂载容器 全部router组件必须写这里面 -->
+  <div id="app">
+    <nav>
+      <!--桌面导航 -->
+      <ul class="nav-list">
+        <li><router-link to="/" active-class="active">首页</router-link></li>
+        <li><router-link to="/articles" active-class="active">文章分类</router-link></li>
+        <li><router-link to="/message" active-class="active">留言板</router-link></li>
+      </ul>
+      <!--手机折叠菜单 -->
+      <details class="mobile-menu">
+        <summary>菜单</summary>
+        <ul>
+          <li><router-link to="/" active-class="active">首页</router-link></li>
+          <li><router-link to="/articles" active-class="active">文章分类</router-link></li>
+          <li><router-link to="/message" active-class="active">留言板</router-link></li>
+        </ul>
+      </details>
+    </nav>
+
+    <!-- ==========路由出口！路由匹配到的页面组件渲染在这里 ========== -->
+    <router-view></router-view>
+  </div>
+
+  <!-- #app外面：注册表单，不受路由切换影响 -->
+  <section class="card" style="max-width:1200px;margin:1rem auto;padding:1rem;">
+    <h3>博客账号注册</h3>
+    <form id="registerForm">
+      <div class="item-row">
+        <label>用户名：</label>
+        <input type="text" id="username" placeholder="3‑16位字母数字下划线">
+        <span class="tip" id="userTip"></span>
+      </div>
+      <div class="item-row">
+        <label>邮箱：</label>
+        <input type="text" id="email" placeholder="请输入邮箱">
+        <span class="tip" id="emailTip"></span>
+      </div>
+      <div class="item-row">
+        <label>密码：</label>
+        <input type="password" id="pwd" placeholder="至少6位">
+        <span class="tip" id="pwdTip"></span>
+      </div>
+      <div class="item-row">
+        <label>确认密码：</label>
+        <input type="password" id="repwd" placeholder="再次输入密码">
+        <span class="tip" id="repwdTip"></span>
+      </div>
+      <div class="item-row">
+        <label></label>
+        <button type="submit">提交注册</button>
+      </div>
+    </form>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 王均均的博客</p>
+  </footer>
+
+<!-- Vue3 -->
+<script src="https://unpkg.com/vue@3.5.44/dist/vue.global.js"></script>
+<!-- Vue Router4 -->
+<script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
+<!--模拟数据 -->
+<script src="js/data.js"></script>
+<!--主逻辑 -->
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验6-task2 父子组件传值</title>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.44/dist/vue.global.js"></script>
+</head>
+<body>
+<div id="app">
+  <fieldset>
+    <h3>父子组件传值（props + $emit）</h3>
+    <!-- 事件使用短横线 send-msg -->
+    <user-card name="王均均" :age="20" @send-msg="receiveMsg"></user-card>
+    <p>子组件传回的数据：{{msgFromSon}}</p>
+  </fieldset>
+</div>
+<script>
+const { createApp } = Vue;
+//子组件 UserCard
+const UserCard = {
+  props:{
+    name:String,
+    age:Number
+  },
+  emits:["send-msg"], //短横线命名事件
+  template:`
+    <div>
+      <p>子组件姓名：{{name}}</p>
+      <p>子组件年龄：{{age}}</p>
+      <button @click="clickBtn">点我发送消息给父组件</button>
+    </div>
+  `,
+  methods:{
+    clickBtn(){
+      this.$emit("send-msg","我是子组件，收到父组件数据啦！")
+    }
+  }
+}
+
+const App = {
+  components:{
+    UserCard
+  },
+  data(){
+    return {
+      msgFromSon:""
+    }
+  },
+  methods:{
+    receiveMsg(val){
+      this.msgFromSon = val;
+    }
+  }
+}
+createApp(App).mount("#app");
+</script>
+</body>
+</html>

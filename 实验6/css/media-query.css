@@ -1,0 +1,59 @@
+/* =========================================================
+   media-query.css  ——  页面自适应（实验2 选做）
+   媒体查询：当屏幕宽度 < 768px（手机/窄窗口）时，
+   ① 左右双栏变上下单栏
+   ② 隐藏桌面横向导航，显示手机端 <details> 折叠菜单
+   ③ 标题等适当缩小
+   语法：@media (max-width: 768px) { ... }
+   ========================================================= */
+
+@media (max-width: 768px) {
+  /* 1. 双栏 → 单栏：flex 主轴改为竖向，两栏自动上下堆叠 */
+  .container {
+    flex-direction: column;
+  }
+
+  /* 2. 隐藏桌面横向导航和二级菜单 */
+  .nav-list {
+    display: none;
+  }
+
+  /* 3. 显示手机端折叠菜单（HTML 里的 <details class="mobile-menu">） */
+  .mobile-menu {
+    display: block;
+    margin: 0 auto 18px;
+    max-width: 320px;
+    text-align: left;
+    color: #fff;
+  }
+  .mobile-menu summary {
+    cursor: pointer;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, .15);
+    border-radius: 8px;
+    width: fit-content;
+    margin: 0 auto;
+    letter-spacing: 2px;
+  }
+  .mobile-menu > nav {
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(31, 58, 102, .18);
+  }
+  .mobile-menu > nav a {
+    display: block;
+    padding: 12px 18px;
+    color: var(--text);
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-menu > nav a:last-child { border-bottom: none; }
+  .mobile-menu > nav a:hover { background: #e8f4fb; text-decoration: none; }
+
+  /* 4. 小屏幕上标题缩小 */
+  .site-header h1 { font-size: 26px; }
+
+  /* 5. 文章页内边距收窄，避免贴边 */
+  .post { padding: 22px 18px; }
+}
